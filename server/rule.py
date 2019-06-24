@@ -18,7 +18,7 @@ class card:
 
   def __str__(self):
     if (color == 3):
-      return ["ton","nan","shi","pei","haku","hatsu","chou"][num]
+      return ["ton","nan","shi","pei","haku","hatsu","chou"][num - 1]
     ret = str(num) + "mspz"[color]
     if (num == 5 and index == 0):
       ret += '_red'
