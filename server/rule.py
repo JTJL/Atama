@@ -59,9 +59,17 @@ class Fuuro:
     
 '''
 describe all the cards of a player
-
+handcards is a set of Card
+fuuros is a list of Fuuro
 '''
 class Cards:
-  def __init__(self, _handcards, _fuuros):
+  def __init__(self, _handcards, _fuuros, _richi):
     self.handcards = _handcards
     self.fuuros = _fuuros
+
+  def new_fuuro(self, _trigger_card, _trigger_player, _related_cards, _type):
+    fuuro_cards = set()
+    for c in _related_cards:
+      self.handcards.remove(c)
+      fuuro_cards.add(c)
+    self.fuuros.append(Fuuro(fuuro_cards, _type, _trigger_card, _trigger_player))
