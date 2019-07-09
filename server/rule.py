@@ -45,8 +45,23 @@ class Card:
     return color * 36 + (num - 1) * 4 + index
 
 '''
+describe a group of cards for yaku checking
+cards is a sorted tuple of cards
+type in {'quetou','kezi','shunzi','gangzi'}
+is_fuuro describe whether the group is a fuuro
+'''
+class Card_Tuple:
+  def __init__(self,_cards,_type,_is_fuuro):
+    self.cards = _cards
+    self.type = _type
+    self.is_fuuro = _is_fuuro
+
+
+fuuro_name_dict = {'atama':'quetou', 'chi':'shunzi', 'pon':'kezi', 'kan':'gangzi', 'ankan':'gangzi'}
+'''
 describe a fuuro
-type in {'chi', 'pon', 'kan', 'ankan'}
+cards is a sorted tuple of cards
+type in {'chi', 'pon', 'kan', 'ankan','atama'}(notice that ankan is not really a fuuro)
 use a set of Card to store the cards
 triiger card and trigger player describe the event triggers the fuuro
 '''
@@ -56,20 +71,26 @@ class Fuuro:
     self.type = _type
     self.trigger_card = _trigger_card
     self.trigger_player = _trigger_player
-    
+
+  def to_card_tuple():
+    _is_fuuro = (self.type != 'ankan')
+    _type = fuuro_name_dict[self._type]
+    return Card_Tuple(self.cards,_type,_is_fuuro)
+
 '''
 describe all the cards of a player
-handcards is a set of Card
+handcards is an ordered_set of Card
 fuuros is a list of Fuuro
 '''
 class Cards:
   def __init__(self, _handcards, _fuuros, _richi):
     self.handcards = _handcards
     self.fuuros = _fuuros
+    self.richi = _richi
 
   def new_fuuro(self, _trigger_card, _trigger_player, _related_cards, _type):
-    fuuro_cards = set()
+    fuuro_cards = [_trigger_card]
     for c in _related_cards:
       self.handcards.remove(c)
-      fuuro_cards.add(c)
-    self.fuuros.append(Fuuro(fuuro_cards, _type, _trigger_card, _trigger_player))
+      fuuro_cards.append(c)
+    self.fuuros.append(Fuuro(tuple(sorted(fuuro_cards)), _type, _trigger_card, _trigger_player))

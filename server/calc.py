@@ -1,5 +1,4 @@
 from rule import *
-from operator import methodcaller
 
 def chi_toi_checker(cards):
   return 0
@@ -27,12 +26,35 @@ def ri_chi_checker(cards):
 
 yaku_list = ["chin_i_so","ri_chi"]
 
+'''
+input: a list of several card_tuple(s)
+output: a tuple (fan_sum, [(fan1, yaku1), (fan2, yaku2) ...])
+'''
 def get_all_yaku(cards):
+  fan_sum = 0
   ret = []
   for pattern in yaku_list:
     check_ret = eval(pattern + "_checker")(cards)
     if (check_ret > 0):
       ret.append((check_ret, pattern))
-  return ret
+      fan_sum += check_ret
+  return (fan_sum, ret)
+
+divide_ret = []
+
+def divide_dfs(now, cards):
+  if (len(cards) == 0):
+    divide_ret.append(now)
+    return
+  
+'''
+input: an instance of (class Cards)
+output: a list of list of several card_tuple(s)  [[ct1_1, ct1_2, ...], [ct2_1, ct2_2, ...], ...]
+'''
+def get_all_divides(cards):
+  global now = []
+  for fuuro in cards.fuuros:
+    now.append(fuuro.to_card_tuple)
+  divide_dfs(now, cards.handcards)
 
 print(get_all_yaku('fuck'))
